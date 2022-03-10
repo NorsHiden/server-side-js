@@ -2,12 +2,12 @@ const router = require('express').Router();
 const User = require('../models/User');
 const Post = require('../models/Post');
 const ExpiredToken = require('../models/ExpiredToken');
-const validSchema = require('./validation');
+const { userSchema } = require('./validation');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 router.post('/register', async (req, res) => {
-	const validated = validSchema.validate({
+	const validated = userSchema.validate({
 		username: req.body.username,
 		email: req.body.email,
 		passwd: req.body.passwd
@@ -53,8 +53,8 @@ router.post('/login', async (req, res) => {
 router.post('/logout', async (req, res) => {
 	const token = req.header("auth-token");
 	if (!token) return res.status(400).json({error: 'user not logged in.'});
-	let validToken = 0
-	try{
+	let validToken = 0;
+	try {
 		validToken = jwt.verify(token, process.env.JWT_TOKEN);
 	} catch (err) {
 		return res.status(400).json({error: err.message});

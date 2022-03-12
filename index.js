@@ -2,7 +2,8 @@ const express = require('express');
 const server = express();
 const authRouter = require('./routes/auth');
 const requestRouter = require('./routes/requests');
-const userUpdateRouter = require('./routes/userUpdate');
+const reqUpdateRouter = require('./routes/reqUpdate');
+const deleteRouter = require('./routes/reqDelete');
 const postRouter = require('./routes/postArticle');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
@@ -30,8 +31,9 @@ const checkToken = async (req, res, next) => {
 server.use(express.json());
 server.use('/api/user', authRouter);
 server.use('/api/get', checkToken, requestRouter);
-server.use('/api/update', checkToken, userUpdateRouter);
+server.use('/api/update', checkToken, reqUpdateRouter);
 server.use('/api/post', checkToken, postRouter);
+server.use('/api/delete', checkToken, deleteRouter);
 
 
 server.listen(1337, () => {

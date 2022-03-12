@@ -13,7 +13,7 @@ router.post('/article', async (req, res) => {
 		category: req.body.category,
 		description: req.body.description,
 	});
-	if (validated.error) return res.status(400).json(validated.error);
+	if (validated.error) return res.status(400).json({error: validated.error});
 	if ((await Post.findOne({title: req.body.title, author: user.username})))
 		return res.status(400).json({error: 'Article already exists'});
 	const newPost = new Post({
@@ -21,6 +21,7 @@ router.post('/article', async (req, res) => {
 		author: user.username,
 		category: req.body.category,
 		description: req.body.description,
+		updatedDate: Date.now
 	});
 	await newPost.save();
 	res.json(newPost);

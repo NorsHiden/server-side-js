@@ -28,4 +28,9 @@ router.get('/user', async (req, res) => {
 	});
 });
 
+router.get('/:username/posts', async (req, res) => {
+	let posts = await Post.find({author: req.params.username});
+	res.json(posts);
+});
+
 module.exports = router;
